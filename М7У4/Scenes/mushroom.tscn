@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://n74sp7etanqq"]
+
+[ext_resource type="Script" uid="uid://cwcd4lrrbe8b0" path="res://Scripts/mushroom.gd" id="1_n8w3q"]
+[ext_resource type="Texture2D" uid="uid://bluabgnk8vcj7" path="res://assets/Sprites/Goomba_Flat.png" id="2_1eata"]
+[ext_resource type="Texture2D" uid="uid://33jlgrtum6qw" path="res://assets/Sprites/Goomba_Walk1.png" id="3_2t6gw"]
+[ext_resource type="Texture2D" uid="uid://bq7rnybu1ugm4" path="res://assets/Sprites/Goomba_Walk2.png" id="4_olgum"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mwfwp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_1eata")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_2t6gw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_olgum")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bonm5"]
+radius = 8.06226
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_stnha"]
+radius = 382.106
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h7r3l"]
+size = Vector2(12, 3.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwys1"]
+size = Vector2(20, 6)
+
+[node name="Mushroom" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_n8w3q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_mwfwp")
+animation = &"walk"
+autoplay = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bonm5")
+
+[node name="Detector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+shape = SubResource("CircleShape2D_stnha")
+
+[node name="Death" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_h7r3l")
+
+[node name="Death2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death2"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_wwys1")
+
+[connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
+[connection signal="body_entered" from="Death" to="." method="_on_death_body_entered"]
+[connection signal="body_entered" from="Death2" to="." method="_on_death_2_body_entered"]

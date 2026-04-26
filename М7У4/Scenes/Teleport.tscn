@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://drgvpthnf2682"]
+
+[ext_resource type="Script" uid="uid://yuer6f04h6w1" path="res://Scripts/teleport.gd" id="1_sh2a8"]
+[ext_resource type="Texture2D" uid="uid://byrqyo7bydcfc" path="res://assets/Sprites/PipeConnection.png" id="2_lx2sl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emqgx"]
+size = Vector2(17, 31.5)
+
+[node name="Teleport" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_sh2a8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+top_level = true
+light_mask = 2
+position = Vector2(-22.5, 3.25)
+shape = SubResource("RectangleShape2D_emqgx")
+
+[node name="PipeConnection" type="Sprite2D" parent="."]
+position = Vector2(3, -5)
+texture = ExtResource("2_lx2sl")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
