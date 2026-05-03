@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh50ed0pc0snh"]
+
+[ext_resource type="Script" uid="uid://bufvl6jw73k8h" path="res://Scripts/koopa.gd" id="1_21jfv"]
+[ext_resource type="Texture2D" uid="uid://cif4wn5ffww6x" path="res://assets/Sprites/Koopa_Shell.png" id="2_iio1p"]
+[ext_resource type="Texture2D" uid="uid://0l658t7dg6lt" path="res://assets/Sprites/Koopa_Walk1.png" id="3_hyj0g"]
+[ext_resource type="Texture2D" uid="uid://b1m7tjxe07x72" path="res://assets/Sprites/Koopa_Walk2.png" id="4_5y64d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6mwp7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iio1p")
+}],
+"loop": true,
+"name": &"shell",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iio1p")
+}],
+"loop": true,
+"name": &"shell_1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_hyj0g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_5y64d")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iie3i"]
+size = Vector2(16, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_21jfv"]
+size = Vector2(18, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iio1p"]
+size = Vector2(3, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hyj0g"]
+size = Vector2(4, 13)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_21jfv"]
+radius = 419.03
+
+[node name="Koopa" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_21jfv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_6mwp7")
+animation = &"shell_1"
+autoplay = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_iie3i")
+
+[node name="Death" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Death"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_21jfv")
+
+[node name="Attack1" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack1"]
+position = Vector2(-8.5, 5.5)
+shape = SubResource("RectangleShape2D_iio1p")
+
+[node name="Attack2" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack2"]
+position = Vector2(8, 5.5)
+shape = SubResource("RectangleShape2D_hyj0g")
+
+[node name="Detector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Detector"]
+shape = SubResource("CircleShape2D_21jfv")
+
+[connection signal="body_entered" from="Death" to="." method="_on_death_body_entered"]
+[connection signal="body_entered" from="Attack1" to="." method="_on_attack_1_body_entered"]
+[connection signal="body_entered" from="Attack2" to="." method="_on_attack_2_body_entered"]
+[connection signal="body_entered" from="Detector" to="." method="_on_detector_body_entered"]
